@@ -33,4 +33,14 @@ router.post('/api/login', async (req,res) => {
     }
 })
 
+router.get('/api/open_questions', async (req,res) => {
+    try{
+        let respuesta = await users.getOpenQuestions();
+        res.json({questions:respuesta}).status(200);
+    } catch(err){
+        res.json({error:true, message:"Error"}).status(400)
+    }
+})
+
+
 module.exports = router;

@@ -55,7 +55,7 @@ class Users {
             return {message:'Please enter valid email address'}
         }
           let userDB 
-          const query = 'select * from users where email = $1'
+          const query = 'select roleid,email,password from users where email = $1'
           let result = await this.connect(query, [email])
     
           if(result.rows.length > 0){
@@ -75,8 +75,14 @@ class Users {
         }
       }
 
-      async compareEmail (email){
-
+      async getOpenQuestions (){
+        try{
+          const query = 'select questionid, userid, content, status from questions where status = 2'
+          const result = await this.connect(query);
+          return result.rows
+        }catch(err){
+          console.log(err);
+        }
       }
 }
 
