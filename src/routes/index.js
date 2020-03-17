@@ -42,5 +42,13 @@ router.get('/api/open_questions', async (req,res) => {
     }
 })
 
-
+router.post('/api/delete_question/:id', async (req,res) => {
+    questionid = req.params.id;
+    try {
+        let respuesta=await users.deleteQuestions(questionid)
+        res.json({questions:respuesta}).status(200);
+    } catch (err) {
+        res.json({error:true, message:"Error server"}).status(400);
+    }
+})
 module.exports = router;

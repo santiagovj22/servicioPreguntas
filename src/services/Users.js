@@ -1,5 +1,5 @@
 const { Client, connectionData} = require('../lib/database');
-const { ROLE_ASESOR } = require('../utils/constants');
+const { ROLE_ASESOR, ESTADOS} = require('../utils/constants');
 const { encryptPassword, matchPassword} = require('../middleware/encrypt_pass');
 const { secret_key } = require('../config/environments');
 const jwt = require('jsonwebtoken');
@@ -63,6 +63,7 @@ class Users {
             const match = await matchPassword(password, userDB.password);
             if(match){
               const token  =  await jwt.sign({userid:userDB.userid, email:userDB.email}, secret_key)
+              //sessionStorage.setItem('user_token', token);
               return {respuesta: 'Your token',token,error: false}
             } else {
               return {respuesta: 'Incorrect password', error: true}
@@ -77,13 +78,28 @@ class Users {
 
       async getOpenQuestions (){
         try{
-          const query = 'select questionid, userid, content, status from questions where status = 2'
+          const query = 'select questionid, userid, content, status from questions where status = 1'
           const result = await this.connect(query);
           return result.rows
         }catch(err){
           console.log(err);
         }
       }
+
+      async deleteQuestions (questionid){
+        try{
+          if(questionid){
+            const query = 'update questions set status = 0 where status=1 and questionid = $1'
+            await this.connect(query, [questionid]);
+            return {message:"Question has been delete... (change state to canceled)"}
+          } else{
+            return {message: "Error to delete the question"};
+          }
+        } catch(err){
+          console.log(err)
+        }
+      }
+      
 }
 
 module.exports = new Users();
