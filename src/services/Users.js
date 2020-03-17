@@ -1,5 +1,5 @@
 const { Client, connectionData} = require('../lib/database');
-const { ROLE_ASESOR, ESTADOS} = require('../utils/constants');
+const { ROLE_ASESOR} = require('../utils/constants');
 const { encryptPassword, matchPassword} = require('../middleware/encrypt_pass');
 const { secret_key } = require('../config/environments');
 const jwt = require('jsonwebtoken');
@@ -29,30 +29,36 @@ class Users {
         });
       }
      
-      async registerUsers (email,password) {
-          try{
-            if(!isValidEmail(email)){
-              return {message:'Please enter valid email address'}
+      async registerAdmin (email,password) {
+        try{
+          if(!email  || !password){
+            return {message: "Enter your email and password"}
+          }
+          if(!isValidEmail(email)){
+              return {message:'Please enter a valid email address'}
           }
             const queryBuscar = 'select * from users where email = $1'
             let resultBuscar = await this.connect(queryBuscar, [email])
             if (resultBuscar.rows.length > 0){
               return { message: 'Email already exists'}
             } else {
-              const hash = await encryptPassword(password)
-              const query = 'insert into users(roleid, email, password,status) values($1, $2, $3, $4)'
-              let result = await this.connect(query, [ROLE_ASESOR,email, hash, 1])
-              return {message:'User has been register', data:result.rows}
+                const hash = await encryptPassword(password)
+                const query = 'insert into users(roleid, email, password,status) values($1, $2, $3, $4)'
+                let result = await this.connect(query, [ROLE_ASESOR,email, hash, 1])
+                return {message:'User has been register', data:result.rows}
             }  
           } catch(err){
               console.log(err);
           }
       }
 
-      async login (email,password){
+      async loginAdmin (email,password){
         try{
+          if(!email  || !password){
+            return {message: "Enter your email and password"}
+          }
           if(!isValidEmail(email)){
-            return {message:'Please enter valid email address'}
+            return {message:'Please enter a valid email address'}
         }
           let userDB 
           const query = 'select roleid,email,password from users where email = $1'
@@ -91,7 +97,7 @@ class Users {
           if(questionid){
             const query = 'update questions set status = 0 where status=1 and questionid = $1'
             await this.connect(query, [questionid]);
-            return {message:"Question has been delete... (change state to canceled)"}
+            return {message:"Question has been delete... (change state to cancel)"}
           } else{
             return {message: "Error to delete the question"};
           }
@@ -99,7 +105,7 @@ class Users {
           console.log(err)
         }
       }
-      
+
 }
 
 module.exports = new Users();

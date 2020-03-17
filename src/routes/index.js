@@ -5,10 +5,7 @@ const users = require('../services/Users');
 router.post('/api/register',async (req,res) => {
     try {
         const { email, password } = req.body
-        if (!req.body.email || !req.body.password ){
-            res.json({SUCCESS: false, message:'Enter your email and password'});
-        }
-        let respuesta= await users.registerUsers(email,password);
+        let respuesta= await users.registerAdmin(email,password);
         if(!respuesta.error){
             res.json({user:respuesta}).status(200);
         } else {
@@ -22,7 +19,7 @@ router.post('/api/register',async (req,res) => {
 router.post('/api/login', async (req,res) => {
     try{
         const{ email, password} = req.body
-        let respuesta=await users.login(email,password)
+        let respuesta=await users.loginAdmin(email,password)
         if(!respuesta.error){
             res.json({users:respuesta}).status(200);
         }else{
@@ -48,7 +45,7 @@ router.post('/api/delete_question/:id', async (req,res) => {
         let respuesta=await users.deleteQuestions(questionid)
         res.json({questions:respuesta}).status(200);
     } catch (err) {
-        res.json({error:true, message:"Error server"}).status(400);
+        res.json({error:true, message:"Error"}).status(400);
     }
 })
 module.exports = router;
