@@ -1,9 +1,9 @@
 const CONSTANTS = {
     ROLE_ASESOR: 3,
     STATUS: {
-        ABIERTA: 1,
-        CERRADA: 2,
-        CANCELADA: 0 
+        OPEN: 1,
+        CLOSE: 2,
+        CANCEL: 0 
     }
 }
 

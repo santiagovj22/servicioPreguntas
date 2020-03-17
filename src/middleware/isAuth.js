@@ -9,7 +9,7 @@ const checkAuth = (req,res,next) => {
     jwt.verify(token,config.secret_key, (err,decoded) => {
         if(err)
             return {message: 'Failed to authenticate token'}
-        req.user
+        req.user = decoded
         next();    
     })
 }
