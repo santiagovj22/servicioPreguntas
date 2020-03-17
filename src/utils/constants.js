@@ -1,6 +1,6 @@
 const CONSTANTS = {
     ROLE_ASESOR: 3,
-    ESTADOS: {
+    STATUS: {
         ABIERTA: 1,
         CERRADA: 2,
         CANCELADA: 0 

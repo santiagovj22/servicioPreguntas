@@ -1,5 +1,5 @@
 const { Client, connectionData} = require('../lib/database');
-const { ROLE_ASESOR} = require('../utils/constants');
+const { ROLE_ASESOR, STATUS} = require('../utils/constants');
 const { encryptPassword, matchPassword} = require('../middleware/encrypt_pass');
 const { secret_key } = require('../config/environments');
 const jwt = require('jsonwebtoken');
@@ -106,6 +106,18 @@ class Users {
         }
       }
 
+      async createQuestion(userid,content) {
+        try{
+          if(!content){
+            return {message: "The question should have content"}
+          }
+          const query = 'insert into questions(userid, content , status ) values($1, $2, $3)'
+          await this.connect(query, [userid,content,STATUS.ABIERTA]);
+          return {message: 'Question has been created'}
+        } catch(err){
+        console.log(err)
+        }
+      }
 }
 
 module.exports = new Users();
