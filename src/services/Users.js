@@ -70,12 +70,12 @@ class Users {
             if(match){
               const token  =  await jwt.sign({userid:userDB.userid, email:userDB.email}, secret_key)
               //sessionStorage('user_token', token);
-              return {respuesta: 'Your token',token,error: false}
+              return {message: 'Your token',token,error: false}
             } else {
-              return {respuesta: 'Incorrect password', error: true}
+              return {message: 'Incorrect password', error: true}
             }
           } else {
-            return {respuesta: 'User not exists in the database',error: true}
+            return {message: 'User not exists in the database',error: true}
           }     
         } catch(err){
           console.log(err)
