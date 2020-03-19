@@ -5,12 +5,12 @@ const checkAuth = (req,res,next) => {
     const token = req.headers['token'];
     if(!token)
         return {message: 'No Token provided'}
-    
-    jwt.verify(token,config.secret_key, (err,decoded) => {
-        if(err)
-            return {message: 'Failed to authenticate token'}
-        req.user = decoded
-        next();    
-    })
+    try{
+        const verified = jwt.verify(token,config.secret_key);
+        req.user = verified;
+        next()
+    } catch(err) {
+        return {message: 'Invalid Token'}
+    }
 }
 module.exports = checkAuth;

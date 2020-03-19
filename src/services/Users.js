@@ -106,16 +106,24 @@ class Users {
         }
       }
 
-      async createQuestion(userid,content) {
+      async createQuestion(userid,content, productid) {
         try{
           if(!content){
             return {message: "The question should have content"}
           }
-          const query = 'insert into questions(userid, content , status ) values($1, $2, $3)'
-          await this.connect(query, [userid,content,STATUS.OPEN]);
+          const query = 'insert into questions(userid, productid, content , status ) values($1, $2, $3, $4)'
+          await this.connect(query, [userid,productid, content,STATUS.OPEN]);
           return {message: 'Question has been created'}
         } catch(err){
         console.log(err)
+        }
+      }
+
+      async createAnswer(questionid, stat){
+        try {
+          
+        } catch (err) {
+          console.log(err);
         }
       }
 }

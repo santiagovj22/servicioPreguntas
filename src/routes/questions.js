@@ -20,17 +20,26 @@ router.post('/api/delete_question/:id', async (req,res) => {
         res.json({error:true, message:"Error"}).status(400);
     }
 })
-router.post('/api/create_question/:id', async (req,res) => {
+router.post('/api/create_question/:id/:productid', async (req,res) => {
     userid = req.params.id;
+    productid = req.params.productid;
     try{
        const { content } = req.body;
-       let respuesta = await questions.createQuestion(userid,content);
+       let respuesta = await questions.createQuestion(userid,content, productid);
        if(!respuesta.error){
            res.json({data:respuesta}).status(200);
        } else {
            res.json({data:respuesta}).status(400)
        }
     } catch(err){
+        res.json({error:true, message: 'Error'}).status(400);
+    }
+})
+
+router.post('/api/create_answer', async (req,res) => {
+    try {
+        
+    } catch (error) {
         res.json({error:true, message: 'Error'}).status(400);
     }
 })
