@@ -84,7 +84,12 @@ class Users {
 
       async getOpenQuestions (){
         try{
-          const query = 'select questionid, userid, content, status from questions where status = 1'
+          const query = `select q.questionid, u.userid,u.name ,q.content, q.status, q.productid, p.title ,q.createdsince from questions as q
+          inner join users as u
+          on u.userid  = q.userid
+          inner join products as p 
+          on p.productid = q.productid
+          where q.status = 1`
           const result = await this.connect(query);
           return result.rows
         }catch(err){
