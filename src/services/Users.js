@@ -69,7 +69,7 @@ class Users {
             const match = await matchPassword(password, userDB.password);
             if(match){
               const token  =  await jwt.sign({userid:userDB.userid, email:userDB.email}, secret_key)
-              //sessionStorage.setItem('user_token', token);
+              //sessionStorage('user_token', token);
               return {respuesta: 'Your token',token,error: false}
             } else {
               return {respuesta: 'Incorrect password', error: true}

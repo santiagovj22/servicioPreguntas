@@ -6,7 +6,7 @@ app.set('port', process.env.PORT || 3001);
 
 app.use(express.json());
 app.use(cors());
-app.use(require('./routes/index'));
+(require('./routes/index'))(app)
 
 
 app.get('/', (req,res) => {
