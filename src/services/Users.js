@@ -124,9 +124,11 @@ class Users {
         }
       }
 
-      async createAnswer(questionid, stat){
+      async createAnswer(answer){
         try {
-          
+          const query = 'insert into questions (userid, productid, content, status, answer) values($1,$2,$3,$4,$5)'
+          await this.connect(query, [answer]);
+          return {message: "Answer save"}
         } catch (err) {
           console.log(err);
         }

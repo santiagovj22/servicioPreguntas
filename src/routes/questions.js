@@ -36,12 +36,14 @@ router.post('/api/create_question/:id/:productid', async (req,res) => {
     }
 })
 
-router.post('/api/create_answer', async (req,res) => {
-    try {
-        
-    } catch (error) {
-        res.json({error:true, message: 'Error'}).status(400);
-    }
-})
+// router.post('/api/create_answer', async (req,res) => {
+//     try {
+//         const { content } = req.body;
+//          let result = await questions.createAnswer(content);
+//         res.json({data: result}).status(200);
+//     } catch (error) {
+//         res.json({error:true, message: 'Error'}).status(400);
+//     }
+// })
 
 module.exports = router;
