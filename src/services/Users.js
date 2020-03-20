@@ -69,7 +69,6 @@ class Users {
             const match = await matchPassword(password, userDB.password);
             if(match){
               const token  =  await jwt.sign({userid:userDB.userid, email:userDB.email}, secret_key)
-              //sessionStorage('user_token', token);
               return {message: 'Your token',token,error: false}
             } else {
               return {message: 'Incorrect password', error: true}
@@ -124,15 +123,20 @@ class Users {
         }
       }
 
-      async createAnswer(answer){
+      async createAnswer(answer, questionid){
         try {
-          const query = 'insert into questions (userid, productid, content, status, answer) values($1,$2,$3,$4,$5)'
-          await this.connect(query, [answer]);
-          return {message: "Answer save"}
-        } catch (err) {
-          console.log(err);
-        }
+          if(!answer){
+            return {message: 'The response should have content'}
+          }
+            const query = 'update questions set answer = $1 , status = 2 where questionid = $2'
+            await this.connect(query, [answer, questionid])
+            return {message: 'The answer has been saved'}
+         } 
+        catch (err) {
+          console.log(err)
       }
-}
+    }
+  }
+
 
 module.exports = new Users();
