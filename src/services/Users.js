@@ -136,6 +136,19 @@ class Users {
           console.log(err)
       }
     }
+
+    async get_questions_by_productid(productid){
+      try{
+          const query = `select u.userid, u.name, q.createdsince, q.content from questions as q
+                         inner join users as u 
+                         on u.userid  = q.userid 
+                         where productid = $1`
+          const result = await this.connect(query, [productid]);
+          return result.rows              
+      } catch(err){
+        console.log(err);
+      }
+    }
   }
 
 

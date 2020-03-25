@@ -27,9 +27,9 @@ router.post('/api/create_question/:id/:productid', async (req,res) => {
        const { content } = req.body;
        let respuesta = await questions.createQuestion(userid,content, productid);
        if(!respuesta.error){
-           res.json({data:respuesta}).status(200);
+           res.json({data:respuesta, SUCCESS: true, ERROR: false}).status(200);
        } else {
-           res.json({data:respuesta}).status(400)
+           res.json({data:respuesta, error: true}).status(400)
        }
     } catch(err){
         res.json({error:true, message: 'Error'}).status(400);
@@ -43,8 +43,17 @@ router.post('/api/create_answer/:id', async (req,res) => {
         let result = await questions.createAnswer(answer, questionid);
         res.json({data: result}).status(200);
     } catch (error) {
-        res.json({error:true, message: 'Error ocurrio'}).status(400);
+        res.json({error:true, message: 'Error'}).status(400);
     }
 })
 
+router.get('/api/get_questions_by_productid/:productid', async (req,res,next) => {
+    productid = req.params.productid;
+    try{
+        let respuesta = await questions.get_questions_by_productid(productid);
+        res.json({data: respuesta, success: true, error: false}).status(200);
+    } catch(err){
+        res.json({data: respuesta, success: false, error: true}).status(400);
+    }
+})
 module.exports = router;
