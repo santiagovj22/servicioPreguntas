@@ -4,8 +4,51 @@ const questions = require('../services/Users');
 
 router.get('/api/open_questions', async (req,res) => {
     try{
-        let respuesta = await questions.getOpenQuestions();
-        res.json({questions:respuesta}).status(200);
+   
+            const questions = [
+                {
+                    "questionid": "25",
+                    "userid": 21,
+                    "name": null,
+                    "content": "test 2.1",
+                    "status": 1,
+                    "productid": 132,
+                    "title": "Pride Mobility Jazzy 614 HD Silla para trabajo pesado Candy Apple Red",
+                    "createdsince": "2020-03-25T02:28:01.057Z"
+                },
+                {
+                    "questionid": "23",
+                    "userid": 56,
+                    "name": null,
+                    "content": "test 2.1",
+                    "status": 1,
+                    "productid": 26,
+                    "title": "HeartWay Passport EasyMove Scooter Remoto Automático Plegable Rojo",
+                    "createdsince": "2020-03-25T02:22:00.967Z"
+                },
+                {
+                    "questionid": "22",
+                    "userid": 56,
+                    "name": null,
+                    "content": "test 2",
+                    "status": 1,
+                    "productid": 55,
+                    "title": "E Wheels EW 36O 3 Wheel 350 lbs Weight Capacity Scooter Orange",
+                    "createdsince": "2020-03-25T02:20:00.775Z"
+                },
+                {
+                    "questionid": "21",
+                    "userid": 19,
+                    "name": "maria",
+                    "content": "test",
+                    "status": 1,
+                    "productid": 55,
+                    "title": "E Wheels EW 36O 3 Wheel 350 lbs Weight Capacity Scooter Orange",
+                    "createdsince": "2020-03-24T21:01:03.812Z"
+                }
+            ]
+        //let respuesta = await questions.getOpenQuestions();
+        res.json({questions:questions}).status(200);
     } catch(err){
         res.json({error:true, message:"Error"}).status(400)
     }
