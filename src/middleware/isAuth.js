@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 const config = require('../config/environments');
 
 const checkAuth = (req,res,next) => {
-    const token = req.headers['access-token'];
+    const token = req.headers['access_token'];
 
     if(!token){
         return res.json({message: 'No Token provided'});
