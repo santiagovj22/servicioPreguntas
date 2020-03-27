@@ -149,6 +149,22 @@ class Users {
         console.log(err);
       }
     }
+
+    async report(){
+      try{
+        const query = `select q.questionid, u.userid,u.name ,q.content, q.status, q.productid, p.title ,q.createdsince from questions as q
+        inner join users as u
+        on u.userid  = q.userid
+        inner join products as p 
+        on p.productid = q.productid
+        where q.status = 2`
+
+        const result = await this.connect(query);
+        return result.rows
+      } catch(err){
+        console.log(err);
+      }
+    }
   }
 
 
