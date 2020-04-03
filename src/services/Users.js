@@ -37,14 +37,14 @@ class Users {
           if(!isValidEmail(email)){
               return {message:'Please enter a valid email address'}
           }
-            const queryBuscar = 'select * from users where email = $1'
+            const queryBuscar = 'select * from store where email = $1'
             let resultBuscar = await this.connect(queryBuscar, [email])
             if (resultBuscar.rows.length > 0){
               return { message: 'Email already exists'}
             } else {
                 const hash = await encryptPassword(password)
-                const query = 'insert into users(roleid, email, password,status) values($1, $2, $3, $4)'
-                let result = await this.connect(query, [ROLE_ASESOR,email, hash, 1])
+                const query = 'insert into store(storeid, name, nit, email, password, phone, address, roleid) values($1, $2, $3, $4, $5, $6, $7, $8)'
+                let result = await this.connect(query, [1,'spiceStock', 122121212, email, hash, 1234567, 83434,ROLE_ASESOR,])
                 return {message:'User has been register', data:result.rows}
             }  
           } catch(err){
@@ -61,7 +61,7 @@ class Users {
             return {message:'Please enter a valid email address'}
         }
           let userDB 
-          const query = 'select roleid,email,password from users where email = $1'
+          const query = 'select storeid, roleid,email,password from store where email = $1'
           let result = await this.connect(query, [email])
     
           if(result.rows.length > 0){
