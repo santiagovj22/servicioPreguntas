@@ -19,7 +19,6 @@ router.post('/api/register',async (req,res) => {
 router.post('/api/login', async (req,res) => {
     try{
         const{ email, password} = req.body
-        console.log(req.body)
         let respuesta=await users.loginAdmin(email,password)
         if(!respuesta.error){
             res.json({users:respuesta}).status(200);

@@ -45,7 +45,7 @@ class Users {
                 const hash = await encryptPassword(password)
                 const query = 'insert into store(storeid, name, nit, email, password, phone, address, roleid) values($1, $2, $3, $4, $5, $6, $7, $8)'
                 let result = await this.connect(query, [1,'spiceStock', 122121212, email, hash, 1234567, 83434,ROLE_ASESOR,])
-                return {message:'User has been register', data:result.rows}
+                return {message:'Store has been register', data:result.rows}
             }  
           } catch(err){
               console.log(err);
@@ -74,7 +74,7 @@ class Users {
               return {message: 'Incorrect password', error: true}
             }
           } else {
-            return {message: 'User not exists in the database',error: true}
+            return {message: 'Store not exists',error: true}
           }     
         } catch(err){
           console.log(err)
@@ -157,7 +157,7 @@ class Users {
         on u.userid  = q.userid
         inner join products as p 
         on p.productid = q.productid
-        where q.status = 2`
+        where q.status = 2 `
 
         const result = await this.connect(query);
         return result.rows
