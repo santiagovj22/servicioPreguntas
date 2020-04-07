@@ -165,6 +165,16 @@ class Users {
         console.log(err);
       }
     }
+
+    async get_categories(){
+      try{
+        const query = `select categoryid, name  from categories c  where parentid isnull and categoryid != 50689`
+        const result = await this.connect(query);
+        return result.rows
+      } catch (err){
+        console.log(err);
+      }
+    }
   }
 
 
