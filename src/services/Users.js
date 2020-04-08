@@ -51,7 +51,7 @@ class Users {
               console.log(err);
           }
       }
-
+//login
       async loginAdmin (email,password){
         try{
           if(!email  || !password){
@@ -80,7 +80,7 @@ class Users {
           console.log(err)
         }
       }
-
+//Listado de las preguntas
       async getOpenQuestions (){
         try{
           const query = `select q.questionid, u.userid,u.name ,q.content, q.status, q.productid, p.title ,q.createdsince from questions as q
@@ -95,7 +95,7 @@ class Users {
           console.log(err);
         }
       }
-
+//cancela las preguntas
       async deleteQuestions (questionid){
         try{
           if(questionid){
@@ -109,7 +109,7 @@ class Users {
           console.log(err)
         }
       }
-
+//esto es para el panel product detail crea la pregunta
       async createQuestion(userid,content, productid) {
         try{
           if(!content){
@@ -122,7 +122,7 @@ class Users {
         console.log(err)
         }
       }
-
+//crea la respuesta desde el modulo gestion
       async createAnswer(answer, questionid){
         try {
           if(!answer){
@@ -136,7 +136,7 @@ class Users {
           console.log(err)
       }
     }
-
+//esto es para el panel de user
     async get_questions_by_productid(productid){
       try{
           const query = `select u.userid, u.name, q.createdsince, q.content from questions as q
@@ -149,7 +149,7 @@ class Users {
         console.log(err);
       }
     }
-
+//Imprime reporte en excel
     async report(){
       try{
         const query = `select q.questionid, u.userid,u.name ,q.content, q.status, q.productid, p.title ,q.createdsince from questions as q
@@ -165,16 +165,65 @@ class Users {
         console.log(err);
       }
     }
-
+    //selecciona las categorias padre
     async get_categories(){
       try{
         const query = `select categoryid, name  from categories c  where parentid isnull and categoryid != 50689`
-        const result = await this.connect(query);
+        const categories = await this.connect(query);
+        return categories.rows
+      } catch (err){
+        console.log(err);
+      }
+    }
+    //Obtiene l;as categorias hijas
+    async get_children_categories(id){
+      try{
+        const query = `SELECT categoryid, fullname,parentid, status  FROM categories where parentid = $1`
+        const result = await this.connect(query, [id]);
+        return result.rows
+      } catch(err){
+        console.log(err);
+      }
+    }
+    //Crea los productos
+    async create_product(categoryid,storeid,title, description,asin,usd,price,stock,weight,height,length,width,status,createdsince){
+      try{
+        const query = `insert into products (categoryid, title, description,asin, usd, price, stock, weight, height, length, width,status, storeid,createdsince)
+                       values($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14)`
+        await this.connect(query, [categoryid, title, description,asin, usd, price, stock, weight, height, length, width,status, storeid,createdsince])
+        return {message: 'product has been created'}
+      } catch(err){
+        console.log(err)
+        }
+    }
+
+    //Lista los productos creados en la tabla
+    async get_products(storeid){
+      try{
+        const query = `select categoryid, title, description,asin, usd, price, stock, weight, height, length, width,status, storeid,createdsince from products where storeid = $1`
+        const result = this.connect(query, [storeid])
         return result.rows
       } catch (err){
         console.log(err);
       }
     }
+    // async get_children_categories(id){
+    //   try{
+    //     const query = `select * from categories where parentid = $1`
+    //     const result = await this.connect(query, [id])
+    //     data_children = []
+    //     for (let i = 0; i < result.length; i++) {
+    //        __json = {
+    //          'id': i[0],
+    //          'name': i[1]
+    //        }
+    //        data_children.push(__json)
+    //     }
+    //     return data_children
+    //   } catch(err){
+    //     console.log(err);
+    //   }
+    // }
   }
 
 
